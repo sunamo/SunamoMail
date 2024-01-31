@@ -1,5 +1,3 @@
-using SunamoFileSystem;
-
 namespace SunamoMail;
 
 /// <summary>
@@ -168,7 +166,7 @@ public partial class SeznamMailbox
 
         foreach (var item in attachments)
         {
-            if (FS.ExistsFile(item))
+            if (File.Exists(item))
             {
                 mail.Attachments.Add(new Attachment(item));
             }
