@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>24.1.24.1</Version>
+    <Version>24.2.1.2</Version>
     <Description>Sending mail with several providers (Seznam.cz, Gmail, etc.)</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,8 +11,8 @@
     <DefineConstants>$(DefineConstants);ASYNC</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoFileSystem" Version="24.1.23.1" />
-    <PackageReference Include="SunamoStringSplit" Version="24.1.14.1" />
-    <PackageReference Include="SunamoValues" Version="24.1.23.1" />
+    <PackageReference Include="SunamoFileSystem" Version="24.2.1.1" />
+    <PackageReference Include="SunamoStringSplit" Version="24.2.1.1" />
+    <PackageReference Include="SunamoValues" Version="24.2.1.1" />
   </ItemGroup>
 </Project>

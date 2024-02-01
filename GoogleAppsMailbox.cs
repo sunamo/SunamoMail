@@ -199,7 +199,7 @@ public partial class GoogleAppsMailbox
         catch (Exception ex)
         {
             emailStatus = "error: " + Exceptions.TextOfExceptions(ex);
-            ThrowEx.Custom(Exc.CallingMethod());
+            throw new Exception(Exc.CallingMethod());
             return emailStatus;
         }
 
