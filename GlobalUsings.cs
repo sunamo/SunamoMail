@@ -1,9 +1,7 @@
 global using System.Collections.Generic;
 global using System;
-global using SunamoExceptions.OnlyInSE;
 global using SunamoValues;
 global using System.IO;
-global using SunamoStringSplit;
 global using System.Net;
 global using System.Net.Mail;
 global using SunamoMail.Data;

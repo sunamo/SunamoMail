@@ -1,3 +1,5 @@
+using SunamoExceptions.OnlyInSE;
+
 namespace SunamoMail;
 
 /// <summary>
