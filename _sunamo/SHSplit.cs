@@ -1,6 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
 
-namespace SunamoMail;
+namespace SunamoMail._sunamo;
 internal class SHSplit
 {
     internal static List<string> Split(string p, params string[] newLine)
