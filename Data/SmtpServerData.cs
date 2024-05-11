@@ -1,4 +1,4 @@
-namespace SunamoMail.Data;
+namespace SunamoMail;
 
 /// <summary>
 /// Reason why is in desktop (derive from it SmtpData)
