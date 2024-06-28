@@ -1,3 +1,5 @@
+
+namespace SunamoMail;
 using System.Diagnostics;
 using System.Text;
 
