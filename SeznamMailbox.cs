@@ -4,7 +4,7 @@ namespace SunamoMail;
 /// Google: working, save sent do outbox
 /// Seznam: working, DONT save sent to outbox
 /// </summary>
-public partial class SeznamMailbox
+public class SeznamMailbox
 {
     /// <summary>
     /// Řetězec, který se objeví u příjemce jako odesílatel. Nemusí to být mailová adresa.
