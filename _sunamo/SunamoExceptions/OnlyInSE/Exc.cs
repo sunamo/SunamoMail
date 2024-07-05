@@ -1,5 +1,5 @@
 
-namespace SunamoMail;
+namespace SunamoMail._sunamo.SunamoExceptions.OnlyInSE;
 using System.Diagnostics;
 using System.Text;
 

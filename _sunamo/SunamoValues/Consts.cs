@@ -1,4 +1,4 @@
-namespace SunamoMail;
+namespace SunamoMail._sunamo.SunamoValues;
 
 
 
