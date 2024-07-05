@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace SunamoMail._sunamo.SunamoStringSplit;
 internal class SHSplit
 {

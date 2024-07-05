@@ -17,3 +17,5 @@ global using SunamoMail._sunamo.SunamoValues;
 global using SunamoMail._sunamo.SunamoXlfKeys;
 global using SunamoMail._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoMail._sunamo.SunamoExceptions._AddedToAllCsproj;
+global using System.Diagnostics;
+global using System.Threading.Tasks;
