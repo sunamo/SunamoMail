@@ -105,7 +105,7 @@ public class GoogleAppsMailbox
         #region Recipient
         if (to.Contains(AllStrings.sc))
         {
-            List<string> _EmailsTO = SHSplit.Split(to, AllStrings.sc);
+            List<string> _EmailsTO = SHSplit.SplitMore(to, AllStrings.sc);
             for (int i = 0; i < _EmailsTO.Count; i++)
             {
                 if (!string.IsNullOrWhiteSpace(_EmailsTO[i]))
@@ -136,7 +136,7 @@ public class GoogleAppsMailbox
         #region Carbon copy
         if (cc.Contains(AllStrings.sc))
         {
-            List<string> _EmailsCC = SHSplit.Split(cc, AllStrings.sc);
+            List<string> _EmailsCC = SHSplit.SplitMore(cc, AllStrings.sc);
             for (int i = 0; i < _EmailsCC.Count; i++)
             {
                 if (!string.IsNullOrWhiteSpace(_EmailsCC[i]))
@@ -162,7 +162,7 @@ public class GoogleAppsMailbox
         //BCC
         if (bcc.Contains(AllStrings.sc))
         {
-            List<string> _EmailsBCC = SHSplit.Split(bcc, AllStrings.sc);
+            List<string> _EmailsBCC = SHSplit.SplitMore(bcc, AllStrings.sc);
             for (int i = 0; i < _EmailsBCC.Count; i++)
             {
                 mail.Bcc.Add(new MailAddress(_EmailsBCC[i]));
