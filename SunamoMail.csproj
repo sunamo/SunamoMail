@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>24.7.15.1</Version>
+    <Version>24.7.16.1</Version>
     <Description>Sending mail with several providers (Seznam.cz, Gmail, etc.)</Description>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
