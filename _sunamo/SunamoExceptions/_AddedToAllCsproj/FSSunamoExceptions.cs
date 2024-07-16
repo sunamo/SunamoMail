@@ -1,5 +1,7 @@
-namespace SunamoMail._sunamo.SunamoExceptions._AddedToAllCsproj;
-internal class FSSunamoExceptions
+//namespace SunamoMail._sunamo.SunamoExceptions._AddedToAllCsproj;
+
+//namespace SunamoMail._sunamo.SunamoExceptions._AddedToAllCsproj;
+internal class FS
 {
     internal static void CreateUpfoldersPsysicallyUnlessThere(string nad)
     {
