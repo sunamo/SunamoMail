@@ -1,7 +1,7 @@
 namespace SunamoMail.Data;
 
 /// <summary>
-/// Reason why is in desktop (derive from it SmtpData)
+///     Reason why is in desktop (derive from it SmtpData)
 /// </summary>
 public class SmtpServerData
 {

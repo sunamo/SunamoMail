@@ -6,6 +6,4 @@ internal class SHSplit
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
-
-
 }
