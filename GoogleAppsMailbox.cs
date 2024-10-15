@@ -1,5 +1,4 @@
 namespace SunamoMail;
-
 /// <summary>
 ///     Google: working, save sent do outbox
 ///     Seznam: working, DONT save sent to outbox
@@ -189,7 +188,7 @@ public class GoogleAppsMailbox
         catch (Exception ex)
         {
             emailStatus = "error: " + Exceptions.TextOfExceptions(ex);
-            throw new Exception(Exc.CallingMethod());
+            throw new Exception(Exceptions.CallingMethod());
             return emailStatus;
         }
 
