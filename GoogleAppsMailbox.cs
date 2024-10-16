@@ -111,9 +111,9 @@ public class GoogleAppsMailbox
 
         #region Recipient
 
-        if (to.Contains(AllStrings.sc))
+        if (to.Contains(";"))
         {
-            var _EmailsTO = SHSplit.SplitMore(to, AllStrings.sc);
+            var _EmailsTO = SHSplit.SplitMore(to, ";");
             for (var i = 0; i < _EmailsTO.Count; i++)
                 if (!string.IsNullOrWhiteSpace(_EmailsTO[i]))
                     mail.To.Add(new MailAddress(_EmailsTO[i]));
@@ -140,9 +140,9 @@ public class GoogleAppsMailbox
 
         #region Carbon copy
 
-        if (cc.Contains(AllStrings.sc))
+        if (cc.Contains(";"))
         {
-            var _EmailsCC = SHSplit.SplitMore(cc, AllStrings.sc);
+            var _EmailsCC = SHSplit.SplitMore(cc, ";");
             for (var i = 0; i < _EmailsCC.Count; i++)
                 if (!string.IsNullOrWhiteSpace(_EmailsCC[i]))
                     mail.CC.Add(new MailAddress(_EmailsCC[i]));
@@ -158,9 +158,9 @@ public class GoogleAppsMailbox
         #region Blind Carbon copy
 
         //BCC
-        if (bcc.Contains(AllStrings.sc))
+        if (bcc.Contains(";"))
         {
-            var _EmailsBCC = SHSplit.SplitMore(bcc, AllStrings.sc);
+            var _EmailsBCC = SHSplit.SplitMore(bcc, ";");
             for (var i = 0; i < _EmailsBCC.Count; i++) mail.Bcc.Add(new MailAddress(_EmailsBCC[i]));
         }
         else
