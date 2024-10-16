@@ -11,3 +11,4 @@ global using SunamoMail._sunamo.SunamoStringSplit;
 global using SunamoMail._sunamo.SunamoExceptions;
 global using System.Diagnostics;
 global using System.Reflection;
+global using System.Diagnostics.CodeAnalysis;
