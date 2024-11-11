@@ -12,3 +12,5 @@ global using SunamoMail._sunamo.SunamoExceptions;
 global using System.Diagnostics;
 global using System.Reflection;
 global using System.Diagnostics.CodeAnalysis;
+global using SunamoMail;
+global using SunamoMail._sunamo;
