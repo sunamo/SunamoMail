@@ -2,7 +2,7 @@ namespace SunamoMail.Services;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-internal partial class MailSender
+public partial class MailSender
 {
 
     public async Task<bool> SendSeznamMailkitWorker(From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
@@ -41,7 +41,7 @@ internal partial class MailSender
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 string information = JsonSerializer.Serialize(d);
-                logService.LogInformation(information);
+                logger.LogInformation(information);
                 return true;
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ internal partial class MailSender
                 // 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-4212b8b39aesm70191195e9.46 - gsmtp
                 d.Exc = ex.Message;
                 string error = JsonSerializer.Serialize(d);
-                logService.LogError(error);
+                logger.LogError(error);
                 return false;
             }
         }

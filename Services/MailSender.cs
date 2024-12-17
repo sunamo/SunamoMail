@@ -1,7 +1,7 @@
 namespace SunamoMail.Services;
 using System.Text.Json;
 
-internal partial class MailSender(ILogger logger, ILogger logService)
+public partial class MailSender(ILogger logger)
 {
     /// <summary>
     /// Přes centrum to už vůbec nejde - pro každý mail poslaný přes SMTP server mi to vrátí kód, který musím poslat v PremiumSMS

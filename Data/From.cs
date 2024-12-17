@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SunamoMail.Data;
 
-internal class From
+public class From
 {
     public string Name { get; set; }
     public string Mail { get; set; }
