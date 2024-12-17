@@ -14,3 +14,8 @@ global using System.Reflection;
 global using System.Diagnostics.CodeAnalysis;
 global using SunamoMail;
 global using SunamoMail._sunamo;
+global using MimeKit;
+global using System.Dynamic;
+global using ILogger = Microsoft.Extensions.Logging.ILogger;
+global using Microsoft.Extensions.Logging;
+global using SunamoMail.Services;
