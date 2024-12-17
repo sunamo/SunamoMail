@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace SunamoMail.Data;
 
-public class From
+public record struct From(string Name, string Mail, string Password)
 {
-    public string Name { get; set; }
-    public string Mail { get; set; }
-    public string Password { get; set; }
 }

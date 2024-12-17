@@ -31,6 +31,7 @@ public class GoogleAppsMailbox
     /// </summary>
     public GoogleAppsMailbox()
     {
+
     }
 
     public GoogleAppsMailbox(string fromEmail, string mailOfAdmin, string password, SmtpServerData smtpServer = null) :
