@@ -1,10 +1,7 @@
 namespace SunamoMail.Services;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 public partial class MailSender
 {
-
     public async Task<bool> SendSeznamMailkitWorker(From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
         var email = new MimeMessage();
@@ -55,5 +52,4 @@ public partial class MailSender
             }
         }
     }
-
 }

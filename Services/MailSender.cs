@@ -1,5 +1,4 @@
 namespace SunamoMail.Services;
-using System.Text.Json;
 
 public partial class MailSender(ILogger logger)
 {
@@ -22,9 +21,7 @@ public partial class MailSender(ILogger logger)
                 UseDefaultCredentials = false, // Nepoužívat výchozí přihlašovací údaje Windows
                 Credentials = new NetworkCredential(from.Mail, from.Password)
             };
-
             mailMessage.From = new MailAddress(from.Mail);
-
             // Vytvoření e-mailové zprávy
             //var mailMessage = new MailMessage
             //{
@@ -44,7 +41,6 @@ public partial class MailSender(ILogger logger)
             return false;
         }
     }
-
     /// <summary>
     /// Zde se mi to zasekne na smtpClient.Send
     /// The operation has timed out.
@@ -60,7 +56,6 @@ public partial class MailSender(ILogger logger)
     /// <returns></returns>
     public bool SendSeznam(From from, string to, MailMessage mailMessage)
     {
-
         try
         {
             // Nastavení SMTP serveru Seznam.cz
@@ -70,7 +65,6 @@ public partial class MailSender(ILogger logger)
             // Přihlašovací údaje k e-mailovému účtu
             smtpClient.Credentials = new NetworkCredential(from.Mail, from.Password);
             // Vytvoření zprávy
-
             mailMessage.To.Add(to);
             //MailMessage mailMessage = new MailMessage();
             //mailMessage.From = new MailAddress(mailFrom);
@@ -89,6 +83,4 @@ public partial class MailSender(ILogger logger)
             return false;
         }
     }
-
-
 }
