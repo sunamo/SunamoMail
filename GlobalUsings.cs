@@ -19,7 +19,6 @@ global using System.Dynamic;
 global using ILogger = Microsoft.Extensions.Logging.ILogger;
 global using Microsoft.Extensions.Logging;
 global using SunamoMail.Services;
-
 global using System.Text.Json;
 global using System.Threading.Tasks;
 global using NullLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger;
