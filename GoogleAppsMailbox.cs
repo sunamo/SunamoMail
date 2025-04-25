@@ -1,4 +1,5 @@
 namespace SunamoMail;
+
 /// <summary>
 ///     Google: working, save sent do outbox
 ///     Seznam: working, DONT save sent to outbox
@@ -114,7 +115,7 @@ public class GoogleAppsMailbox
 
         if (to.Contains(";"))
         {
-            var _EmailsTO = SHSplit.SplitMore(to, ";");
+            var _EmailsTO = SHSplit.Split(to, ";");
             for (var i = 0; i < _EmailsTO.Count; i++)
                 if (!string.IsNullOrWhiteSpace(_EmailsTO[i]))
                     mail.To.Add(new MailAddress(_EmailsTO[i]));
@@ -143,7 +144,7 @@ public class GoogleAppsMailbox
 
         if (cc.Contains(";"))
         {
-            var _EmailsCC = SHSplit.SplitMore(cc, ";");
+            var _EmailsCC = SHSplit.Split(cc, ";");
             for (var i = 0; i < _EmailsCC.Count; i++)
                 if (!string.IsNullOrWhiteSpace(_EmailsCC[i]))
                     mail.CC.Add(new MailAddress(_EmailsCC[i]));
@@ -161,7 +162,7 @@ public class GoogleAppsMailbox
         //BCC
         if (bcc.Contains(";"))
         {
-            var _EmailsBCC = SHSplit.SplitMore(bcc, ";");
+            var _EmailsBCC = SHSplit.Split(bcc, ";");
             for (var i = 0; i < _EmailsBCC.Count; i++) mail.Bcc.Add(new MailAddress(_EmailsBCC[i]));
         }
         else
