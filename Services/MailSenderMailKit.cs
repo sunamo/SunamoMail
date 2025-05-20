@@ -2,7 +2,7 @@ namespace SunamoMail.Services;
 
 public partial class MailSender
 {
-    public async Task<bool> SendSeznamMailkitWorker(From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
+    public async Task<bool> SendSeznamMailkitWorker(int attemps, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
         // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
         to = to.Trim();
@@ -31,28 +31,36 @@ public partial class MailSender
                 Text = plainTextBody
             };
         }
-        using (var smtp = new MailKit.Net.Smtp.SmtpClient())
+
+        for (int a = 0; a < attemps; a++)
         {
-            try
+
+
+            using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
-                smtp.Connect("smtp.seznam.cz", 465, true);
-                // Note: only needed if the SMTP server requires authentication
-                smtp.Authenticate(from.Mail, from.Password);
-                smtp.Send(email);
-                smtp.Disconnect(true);
-                string information = JsonSerializer.Serialize(d);
-                logger.LogInformation(information);
-                return true;
+                try
+                {
+                    smtp.Connect("smtp.seznam.cz", 465, true);
+                    // Note: only needed if the SMTP server requires authentication
+                    smtp.Authenticate(from.Mail, from.Password);
+                    smtp.Send(email);
+                    smtp.Disconnect(true);
+                    string information = JsonSerializer.Serialize(d);
+                    logger.LogInformation(information);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    // Username and Password not accepted.\ For more information, go to
+                    // 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-4212b8b39aesm70191195e9.46 - gsmtp
+                    d.Exc = ex.Message;
+                    string error = JsonSerializer.Serialize(d);
+                    logger.LogError(error);
+
+                }
             }
-            catch (Exception ex)
-            {
-                // Username and Password not accepted.\ For more information, go to
-                // 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-4212b8b39aesm70191195e9.46 - gsmtp
-                d.Exc = ex.Message;
-                string error = JsonSerializer.Serialize(d);
-                logger.LogError(error);
-                return false;
-            }
+
         }
+        return false;
     }
 }

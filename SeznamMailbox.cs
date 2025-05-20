@@ -60,7 +60,7 @@ public class SeznamMailbox
     /// <param name="subject"></param>
     /// <param name="htmlBody"></param>
     /// <param name="attachments"></param>
-    public string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string body,
+    public string SendEmail(int attempts, string to, string cc, string bcc, string replyTo, string subject, string body,
         bool htmlBody, params string[] attachments)
     {
         // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
@@ -163,18 +163,21 @@ public class SeznamMailbox
             if (File.Exists(item))
                 mail.Attachments.Add(new Attachment(item));
 
-        try
+        for (int i = 0; i < attempts; i++)
         {
-            client.Send(mail);
-            mail.Dispose();
-            mail = null;
-            emailStatus = "success";
-        }
-        catch (Exception ex)
-        {
-            emailStatus = "error: ";
-            if (ex.Message != null) emailStatus += ex.Message + ". ";
-            return emailStatus;
+            try
+            {
+                client.Send(mail);
+                mail.Dispose();
+                mail = null;
+                emailStatus = "success";
+                break;
+            }
+            catch (Exception ex)
+            {
+                emailStatus = "error: ";
+                if (ex.Message != null) emailStatus += ex.Message + ". ";
+            }
         }
 
         return emailStatus;
