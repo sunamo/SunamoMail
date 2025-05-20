@@ -12,6 +12,9 @@ public partial class MailSender(ILogger logger)
     /// <returns></returns>
     public bool SendCentrum(From from, string to, MailMessage mailMessage)
     {
+        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
+        to = to.Trim();
+
         try
         {
             var smtpClient = new SmtpClient("smtp.centrum.cz")
@@ -41,6 +44,7 @@ public partial class MailSender(ILogger logger)
             return false;
         }
     }
+
     /// <summary>
     /// Zde se mi to zasekne na smtpClient.Send
     /// The operation has timed out.
@@ -56,6 +60,9 @@ public partial class MailSender(ILogger logger)
     /// <returns></returns>
     public bool SendSeznam(From from, string to, MailMessage mailMessage)
     {
+        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
+        to = to.Trim();
+
         try
         {
             // Nastavení SMTP serveru Seznam.cz

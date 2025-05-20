@@ -79,6 +79,9 @@ public class GoogleAppsMailbox
     public string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string body,
         bool htmlBody, params string[] attachments)
     {
+        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
+        to = to.Trim();
+
         var emailStatus = string.Empty;
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

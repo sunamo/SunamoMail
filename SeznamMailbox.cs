@@ -63,6 +63,9 @@ public class SeznamMailbox
     public string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string body,
         bool htmlBody, params string[] attachments)
     {
+        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
+        to = to.Trim();
+
         var emailStatus = string.Empty;
 
         var client = new SmtpClient();

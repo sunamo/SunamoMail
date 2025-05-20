@@ -4,6 +4,9 @@ public partial class MailSender
 {
     public async Task<bool> SendSeznamMailkitWorker(From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
+        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
+        to = to.Trim();
+
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress(from.Name, from.Mail));
         email.To.Add(new MailboxAddress(to, to));
