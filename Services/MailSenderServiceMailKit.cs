@@ -34,8 +34,6 @@ public partial class MailSender
 
         for (int a = 0; a < attemps; a++)
         {
-
-
             using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
                 try
