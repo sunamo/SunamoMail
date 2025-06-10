@@ -1,6 +1,6 @@
 namespace SunamoMail.Services;
 
-public partial class MailSender(ILogger logger)
+public partial class MailSenderService(ILogger logger)
 {
     /// <summary>
     /// Přes centrum to už vůbec nejde - pro každý mail poslaný přes SMTP server mi to vrátí kód, který musím poslat v PremiumSMS

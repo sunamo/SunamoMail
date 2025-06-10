@@ -1,6 +1,6 @@
 namespace SunamoMail.Services;
 
-public partial class MailSender
+public partial class MailSenderService
 {
     public async Task<bool> SendSeznamMailkitWorker(int attemps, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
