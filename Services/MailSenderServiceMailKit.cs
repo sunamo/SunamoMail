@@ -1,6 +1,6 @@
 namespace SunamoMail.Services;
 
-public partial class MailSender
+public partial class MailSenderService
 {
     public async Task<bool> SendSeznamMailkitWorker(int attemps, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
@@ -34,8 +34,6 @@ public partial class MailSender
 
         for (int a = 0; a < attemps; a++)
         {
-
-
             using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
                 try
