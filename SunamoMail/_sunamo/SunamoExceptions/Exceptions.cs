@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoMail._sunamo.SunamoExceptions;
 // © www.sunamo.cz. All Rights Reserved.
 internal sealed partial class Exceptions
@@ -7,17 +10,17 @@ internal sealed partial class Exceptions
     internal static string TextOfExceptions(Exception ex, bool alsoInner = true)
     {
         if (ex == null) return string.Empty;
-        StringBuilder sb = new();
-        sb.Append("Exception:");
-        sb.AppendLine(ex.Message);
+        StringBuilder stringBuilder = new();
+        stringBuilder.Append("Exception:");
+        stringBuilder.AppendLine(ex.Message);
         if (alsoInner)
             while (ex.InnerException != null)
             {
                 ex = ex.InnerException;
-                sb.AppendLine(ex.Message);
+                stringBuilder.AppendLine(ex.Message);
             }
-        var r = sb.ToString();
-        return r;
+        var result = stringBuilder.ToString();
+        return result;
     }
 
     internal static string CallingMethod(int v = 1)

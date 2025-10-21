@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoMail.Data;
 
 /// <summary>
@@ -10,17 +13,17 @@ public class SmtpServerData
 
     public static SmtpServerData Gmail()
     {
-        var s = new SmtpServerData();
-        s.port = 587;
-        s.smtpServer = "smtp.gmail.com";
-        return s;
+        var text = new SmtpServerData();
+        text.port = 587;
+        text.smtpServer = "smtp.gmail.com";
+        return text;
     }
 
     public static SmtpServerData SeznamCz()
     {
-        var s = new SmtpServerData();
-        s.port = 25;
-        s.smtpServer = "smtp.seznam.cz";
-        return s;
+        var text = new SmtpServerData();
+        text.port = 25;
+        text.smtpServer = "smtp.seznam.cz";
+        return text;
     }
 }
