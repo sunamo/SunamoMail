@@ -1,85 +1,97 @@
 namespace SunamoMail;
 
 /// <summary>
-///     Google: working, save sent do outbox
-///     Seznam: working, DONT save sent to outbox
+/// Google Apps mailbox for sending emails.
+/// Working: saves sent messages to outbox.
 /// </summary>
 public class GoogleAppsMailbox
 {
     private static Type type = typeof(GoogleAppsMailbox);
 
     /// <summary>
-    ///     Povinný. Celá adresa emailu který jste si nastavili na https://ks.aspone.cz/
+    /// Gets or sets the complete email address configured for sending.
     /// </summary>
-    public string fromEmail;
+    public string? FromEmail { get; set; }
 
     /// <summary>
-    ///     Řetězec, který se objeví u příjemce jako odesílatel. Nemusí to být mailová adresa.
+    /// Gets or sets the sender name that appears to recipients (does not need to be an email address).
     /// </summary>
-    public string fromName;
-
-    public string mailOfAdmin;
+    public string? FromName { get; set; }
 
     /// <summary>
-    ///     Povinný. Heslo k mailu userName, které se taktéž nastavuje na https://ks.aspone.cz/
+    /// Gets or sets the administrator's email address for notifications.
     /// </summary>
-    public string password;
-
-    public SmtpServerData smtpServerData = new();
+    public string? MailOfAdmin { get; set; }
 
     /// <summary>
-    ///     For sending from noreply@sunamo.cz
+    /// Gets or sets the password for the email account.
+    /// </summary>
+    public string? Password { get; set; }
+
+    /// <summary>
+    /// Gets or sets the SMTP server configuration.
+    /// </summary>
+    public SmtpServerData SmtpServerData { get; set; } = new();
+
+    /// <summary>
+    /// Initializes a new instance for sending from noreply@sunamo.cz.
     /// </summary>
     public GoogleAppsMailbox()
     {
 
     }
 
-    public GoogleAppsMailbox(string fromEmail, string mailOfAdmin, string password, SmtpServerData smtpServer = null) :
+    /// <summary>
+    /// Initializes a new instance with the specified email configuration.
+    /// </summary>
+    /// <param name="fromEmail">The email address to send from.</param>
+    /// <param name="mailOfAdmin">The administrator's email address.</param>
+    /// <param name="password">The email account password.</param>
+    /// <param name="smtpServer">Optional SMTP server configuration.</param>
+    public GoogleAppsMailbox(string fromEmail, string mailOfAdmin, string password, SmtpServerData? smtpServer = null) :
         this(string.Empty, fromEmail, mailOfAdmin, password, smtpServer)
     {
     }
 
     /// <summary>
-    ///     Do A3 se ve výchozí stavu předává GeneralCells.EmailOfUser(1). Can be null, its used in scz to send mails to
-    ///     webmaster
-    ///     Dont forget set password for A2 or use without-parametric ctor
+    /// Initializes a new instance with full email configuration.
+    /// Can be null, used to send mails to webmaster.
     /// </summary>
-    /// <param name="fromName"></param>
-    /// <param name="fromEmail"></param>
-    /// <param name="mailOfAdmin"></param>
+    /// <param name="fromName">The sender's display name.</param>
+    /// <param name="fromEmail">The email address to send from.</param>
+    /// <param name="mailOfAdmin">The administrator's email address.</param>
+    /// <param name="password">The email account password.</param>
+    /// <param name="smtpServer">Optional SMTP server configuration.</param>
     public GoogleAppsMailbox(string fromName, string fromEmail, string mailOfAdmin, string password,
-        SmtpServerData smtpServer = null)
+        SmtpServerData? smtpServer = null)
     {
-        this.fromName = fromName;
-        this.fromEmail = fromEmail;
-        this.mailOfAdmin = mailOfAdmin;
-        this.password = password;
+        this.FromName = fromName;
+        this.FromEmail = fromEmail;
+        this.MailOfAdmin = mailOfAdmin;
+        this.Password = password;
 
-        if (smtpServer != null) smtpServerData = smtpServer;
+        if (smtpServer != null) SmtpServerData = smtpServer;
     }
 
-    // public GoogleAppsMailbox( SmtpData d) : this(d.login,d.login, d.pw, d)
-    // {
-    //
-    // }
-
     /// <summary>
-    ///     Return either success or starting with error:
-    ///     Do A1, A2, A3 se může zadat více adres, stačí je oddělit středníkem
-    ///     A4 nastav na "", pokud chceš použít jako reply-to adresu A1
-    ///     As empty value use se, not null
+    /// Sends an email message.
+    /// Returns either "success" or a message starting with "error:".
+    /// Multiple addresses can be specified in to, cc, bcc separated by semicolons.
+    /// Set replyTo to empty string to use the from address as reply-to.
+    /// Use empty string for unused parameters, not null.
     /// </summary>
-    /// <param name="to"></param>
-    /// <param name="cc"></param>
-    /// <param name="bcc"></param>
-    /// <param name="subject"></param>
-    /// <param name="htmlBody"></param>
-    /// <param name="attachments"></param>
+    /// <param name="to">Recipient email address(es), semicolon-separated for multiple.</param>
+    /// <param name="cc">Carbon copy email address(es), semicolon-separated for multiple.</param>
+    /// <param name="bcc">Blind carbon copy email address(es), semicolon-separated for multiple.</param>
+    /// <param name="replyTo">Reply-to email address, or empty string to use the from address.</param>
+    /// <param name="subject">Email subject line.</param>
+    /// <param name="body">Email body content.</param>
+    /// <param name="isBodyHtml">Whether the body content is HTML formatted.</param>
+    /// <param name="attachments">Optional file paths to attach to the email.</param>
+    /// <returns>Returns "success" on successful send, or "error: [message]" on failure.</returns>
     public string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string body,
-        bool htmlBody, params string[] attachments)
+        bool isBodyHtml, params string[] attachments)
     {
-        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
         to = to.Trim();
 
         var emailStatus = string.Empty;
@@ -87,44 +99,41 @@ public class GoogleAppsMailbox
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
         var client = new SmtpClient();
-        client.EnableSsl =
-            true; //Mail aspone nefunguje na SSL zatím, pokud byste zde dali true, tak vám vznikne výjimka se zprávou Server does not support secure connections.
+        client.EnableSsl = true;
 
-        client.UseDefaultCredentials = false; // must be before set up Credentials
-        client.Credentials = new NetworkCredential(fromEmail, password);
-        client.Port = smtpServerData.port; //Fungovalo mi to když jsem žádný port nezadal a jelo mi to na výchozím
-        client.Host =
-            smtpServerData
-                .smtpServer; //Adresa smtp serveru. Může končit buď na název vašeho webu nebo na aspone.cz. Zadává se bez protokolu, jak je zvykem
+        client.UseDefaultCredentials = false;
+        client.Credentials = new NetworkCredential(FromEmail, Password);
+        client.Port = SmtpServerData.Port;
+        client.Host = SmtpServerData.SmtpServer;
 
         var mail = new MailMessage();
 
-        var ma = new MailAddress(fromEmail, fromName);
-        mail.From = ma;
+        var mailAddress = new MailAddress(FromEmail, FromName);
+        mail.From = mailAddress;
 
         if (replyTo != "")
         {
-            var ma2 = new MailAddress(replyTo, replyTo);
-            mail.ReplyToList.Add(ma2);
+            var replyToAddress = new MailAddress(replyTo, replyTo);
+            mail.ReplyToList.Add(replyToAddress);
         }
         else
         {
-            mail.ReplyToList.Add(ma);
+            mail.ReplyToList.Add(mailAddress);
         }
 
-        mail.Sender = ma;
+        mail.Sender = mailAddress;
 
         #region Recipient
 
         if (to.Contains(";"))
         {
-            var _EmailsTO = SHSplit.Split(to, ";");
-            for (var i = 0; i < _EmailsTO.Count; i++)
-                if (!string.IsNullOrWhiteSpace(_EmailsTO[i]))
-                    mail.To.Add(new MailAddress(_EmailsTO[i]));
+            var emailsTo = SHSplit.Split(to, ";");
+            for (var i = 0; i < emailsTo.Count; i++)
+                if (!string.IsNullOrWhiteSpace(emailsTo[i]))
+                    mail.To.Add(new MailAddress(emailsTo[i]));
             if (mail.To.Count == 0)
             {
-                emailStatus = "error: Nebyl zadán primární příjemce zprávy. ";
+                emailStatus = "error: No primary recipient was specified.";
                 return emailStatus;
             }
         }
@@ -136,7 +145,7 @@ public class GoogleAppsMailbox
             }
             else
             {
-                emailStatus = "error: Nebyl zadán primární příjemce zprávy. ";
+                emailStatus = "error: No primary recipient was specified.";
                 return emailStatus;
             }
         }
@@ -147,26 +156,24 @@ public class GoogleAppsMailbox
 
         if (cc.Contains(";"))
         {
-            var _EmailsCC = SHSplit.Split(cc, ";");
-            for (var i = 0; i < _EmailsCC.Count; i++)
-                if (!string.IsNullOrWhiteSpace(_EmailsCC[i]))
-                    mail.CC.Add(new MailAddress(_EmailsCC[i]));
+            var emailsCc = SHSplit.Split(cc, ";");
+            for (var i = 0; i < emailsCc.Count; i++)
+                if (!string.IsNullOrWhiteSpace(emailsCc[i]))
+                    mail.CC.Add(new MailAddress(emailsCc[i]));
         }
         else
         {
             if (!string.IsNullOrWhiteSpace(cc)) mail.CC.Add(new MailAddress(cc));
-            // Neděje se nic, prostě uživatel nic nezadal
         }
 
         #endregion
 
         #region Blind Carbon copy
 
-        //BCC
         if (bcc.Contains(";"))
         {
-            var _EmailsBCC = SHSplit.Split(bcc, ";");
-            for (var i = 0; i < _EmailsBCC.Count; i++) mail.Bcc.Add(new MailAddress(_EmailsBCC[i]));
+            var emailsBcc = SHSplit.Split(bcc, ";");
+            for (var i = 0; i < emailsBcc.Count; i++) mail.Bcc.Add(new MailAddress(emailsBcc[i]));
         }
         else
         {
@@ -177,11 +184,11 @@ public class GoogleAppsMailbox
 
         mail.Subject = subject;
         mail.Body = body;
-        mail.IsBodyHtml = htmlBody;
+        mail.IsBodyHtml = isBodyHtml;
 
-        foreach (var item in attachments)
-            if (File.Exists(item))
-                mail.Attachments.Add(new Attachment(item));
+        foreach (var attachmentPath in attachments)
+            if (File.Exists(attachmentPath))
+                mail.Attachments.Add(new Attachment(attachmentPath));
 
         try
         {
@@ -194,7 +201,6 @@ public class GoogleAppsMailbox
         {
             emailStatus = "error: " + Exceptions.TextOfExceptions(ex);
             throw new Exception(Exceptions.CallingMethod());
-            return emailStatus;
         }
 
         return emailStatus;

@@ -1,43 +1,41 @@
 namespace SunamoMail.Services;
 
+/// <summary>
+/// Email sending service supporting multiple providers.
+/// </summary>
 public partial class MailSenderService(ILogger logger)
 {
     /// <summary>
-    /// Přes centrum to už vůbec nejde - pro každý mail poslaný přes SMTP server mi to vrátí kód, který musím poslat v PremiumSMS
-    /// Když jeden mail takto projde, další se zastaví
+    /// Sends email via Centrum.cz SMTP server.
+    /// Note: Centrum now requires SMS verification code for each email sent via SMTP,
+    /// making this method impractical for automated sending.
+    /// After one email succeeds, subsequent emails will be blocked.
     /// </summary>
-    /// <param name="to"></param>
-    /// <param name="subject"></param>
-    /// <param name="body"></param>
-    /// <returns></returns>
-    public bool SendCentrum(int attemps, From from, string to, MailMessage mailMessage)
+    /// <param name="attempts">Number of send attempts to make before giving up.</param>
+    /// <param name="from">Sender credentials (name, email, password).</param>
+    /// <param name="to">Recipient email address.</param>
+    /// <param name="mailMessage">Pre-configured mail message to send.</param>
+    /// <returns>True if email was sent successfully, false otherwise.</returns>
+    public bool SendCentrum(int attempts, From from, string to, MailMessage mailMessage)
     {
-        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
         to = to.Trim();
 
-        for (int i = 0; i < attemps; i++)
+        for (int attemptIndex = 0; attemptIndex < attempts; attemptIndex++)
         {
 
             try
             {
                 var smtpClient = new SmtpClient("smtp.centrum.cz")
                 {
-                    Port = 587, // Port pro SMTP s TLS
-                    EnableSsl = true, // Povolení zabezpečení TLS
-                    UseDefaultCredentials = false, // Nepoužívat výchozí přihlašovací údaje Windows
+                    Port = 587,
+                    EnableSsl = true,
+                    UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(from.Mail, from.Password)
                 };
                 mailMessage.From = new MailAddress(from.Mail);
-                // Vytvoření e-mailové zprávy
-                //var mailMessage = new MailMessage
-                //{
-                //    From = new MailAddress(mailFrom),
-                //    Subject = subject,
-                //    Body = body,
-                //    IsBodyHtml = false // Nastavení, zda je tělo zprávy ve formátu HTML (v tomto případě ne)
-                //};
-                mailMessage.To.Add(to); // Přidání příjemce
-                                        // Odeslání e-mailu
+
+                mailMessage.To.Add(to);
+
                 smtpClient.Send(mailMessage);
                 return true;
             }
@@ -53,49 +51,37 @@ public partial class MailSenderService(ILogger logger)
     }
 
     /// <summary>
-    /// Zde se mi to zasekne na smtpClient.Send
-    /// The operation has timed out.
-    /// 
-    /// Otázka je čím to je.
-    /// MOhl bych si stáhnout mail klienta a zkusit v něm odeslat mail https://g.co/gemini/share/1af309732d3b
-    /// 
-    /// Možná ale kdybych používal seznam z email profi tak takové omezení tam nebude.
+    /// Sends email via Seznam.cz SMTP server.
+    /// Note: This method may timeout at smtpClient.Send with "The operation has timed out."
+    /// Consider using Seznam Email Pro for better reliability.
+    /// Alternatively, try using a desktop email client to verify SMTP settings.
     /// </summary>
-    /// <param name="to"></param>
-    /// <param name="subject"></param>
-    /// <param name="body"></param>
-    /// <returns></returns>
-    public bool SendSeznam(int attemps, From from, string to, MailMessage mailMessage)
+    /// <param name="attempts">Number of send attempts to make before giving up.</param>
+    /// <param name="from">Sender credentials (name, email, password).</param>
+    /// <param name="to">Recipient email address.</param>
+    /// <param name="mailMessage">Pre-configured mail message to send.</param>
+    /// <returns>True if email was sent successfully, false otherwise.</returns>
+    public bool SendSeznam(int attempts, From from, string to, MailMessage mailMessage)
     {
-        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
         to = to.Trim();
 
-        for (int i = 0; i < attemps; i++)
+        for (int attemptIndex = 0; attemptIndex < attempts; attemptIndex++)
         {
             try
             {
-                // Nastavení SMTP serveru Seznam.cz
                 SmtpClient smtpClient = new SmtpClient("smtp.seznam.cz", 465);
-                // Povolení SSL šifrování (vyžadováno Seznamem)
                 smtpClient.EnableSsl = true;
-                // Přihlašovací údaje k e-mailovému účtu
                 smtpClient.Credentials = new NetworkCredential(from.Mail, from.Password);
-                // Vytvoření zprávy
+
                 mailMessage.To.Add(to);
-                //MailMessage mailMessage = new MailMessage();
-                //mailMessage.From = new MailAddress(mailFrom);
-                //mailMessage.To.Add(to); // Můžete přidat více příjemců
-                //mailMessage.Subject = subject;
-                //mailMessage.Body = body;
-                // Odeslání zprávy
+
                 smtpClient.Send(mailMessage);
-                Console.WriteLine("E-mail odeslán úspěšně.");
+                Console.WriteLine("Email sent successfully.");
                 return true;
             }
             catch (Exception ex)
             {
-                // Zde se mi to zasekne na smtpClient.Send
-                Console.WriteLine("Chyba při odesílání e-mailu: " + ex.Message);
+                Console.WriteLine("Error sending email: " + ex.Message);
 
             }
         }

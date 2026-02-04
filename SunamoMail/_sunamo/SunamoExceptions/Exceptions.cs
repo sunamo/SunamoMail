@@ -1,30 +1,43 @@
 namespace SunamoMail._sunamo.SunamoExceptions;
 
-// © www.sunamo.cz. All Rights Reserved.
+/// <summary>
+/// Exception handling utilities.
+/// </summary>
 internal sealed partial class Exceptions
 {
     #region Other
 
-    internal static string TextOfExceptions(Exception ex, bool alsoInner = true)
+    /// <summary>
+    /// Gets the text representation of an exception and optionally its inner exceptions.
+    /// </summary>
+    /// <param name="exception">The exception to format.</param>
+    /// <param name="isIncludingInnerExceptions">Whether to include inner exceptions in the output.</param>
+    /// <returns>A formatted string containing the exception messages.</returns>
+    internal static string TextOfExceptions(Exception exception, bool isIncludingInnerExceptions = true)
     {
-        if (ex == null) return string.Empty;
+        if (exception == null) return string.Empty;
         StringBuilder stringBuilder = new();
         stringBuilder.Append("Exception:");
-        stringBuilder.AppendLine(ex.Message);
-        if (alsoInner)
-            while (ex.InnerException != null)
+        stringBuilder.AppendLine(exception.Message);
+        if (isIncludingInnerExceptions)
+            while (exception.InnerException != null)
             {
-                ex = ex.InnerException;
-                stringBuilder.AppendLine(ex.Message);
+                exception = exception.InnerException;
+                stringBuilder.AppendLine(exception.Message);
             }
         var result = stringBuilder.ToString();
         return result;
     }
 
-    internal static string CallingMethod(int v = 1)
+    /// <summary>
+    /// Gets the name of the calling method from the stack trace.
+    /// </summary>
+    /// <param name="stackFrameIndex">The stack frame index to retrieve (default is 1 for immediate caller).</param>
+    /// <returns>The name of the calling method, or an error message if unavailable.</returns>
+    internal static string CallingMethod(int stackFrameIndex = 1)
     {
         StackTrace stackTrace = new();
-        var methodBase = stackTrace.GetFrame(v)?.GetMethod();
+        var methodBase = stackTrace.GetFrame(stackFrameIndex)?.GetMethod();
         if (methodBase == null)
         {
             return "Method name cannot be get";
@@ -35,7 +48,7 @@ internal sealed partial class Exceptions
     #endregion
 
     #region IsNullOrWhitespace
-    readonly static StringBuilder sbAdditionalInfoInner = new();
-    readonly static StringBuilder sbAdditionalInfo = new();
+    internal static readonly StringBuilder SbAdditionalInfoInner = new();
+    internal static readonly StringBuilder SbAdditionalInfo = new();
     #endregion
 }

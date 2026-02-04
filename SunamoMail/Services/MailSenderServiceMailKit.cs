@@ -1,26 +1,39 @@
 namespace SunamoMail.Services;
 
+/// <summary>
+/// Email sending service using MailKit library.
+/// </summary>
 public partial class MailSenderService
 {
-    public async Task<bool> SendSeznamMailkitWorker(int attemps, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
+    /// <summary>
+    /// Sends email via Seznam.cz using MailKit library with retry logic.
+    /// This is an async worker method that attempts to send the email multiple times.
+    /// </summary>
+    /// <param name="attempts">Number of send attempts to make before giving up.</param>
+    /// <param name="from">Sender credentials (name, email, password).</param>
+    /// <param name="to">Recipient email address.</param>
+    /// <param name="subject">Email subject line.</param>
+    /// <param name="plainTextBody">Plain text email body content.</param>
+    /// <param name="attachments">Collection of file paths to attach to the email.</param>
+    /// <returns>True if email was sent successfully, false otherwise.</returns>
+    public async Task<bool> SendSeznamMailkitWorker(int attempts, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
-        // Required, otherwise https://github.com/jstedfast/MailKit/issues/488#issuecomment-292989711
         to = to.Trim();
 
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress(from.Name, from.Mail));
         email.To.Add(new MailboxAddress(to, to));
         email.Subject = subject;
-        dynamic d = new ExpandoObject();
-        d.To = to;
-        d.Subject = subject;
+        dynamic emailInfo = new ExpandoObject();
+        emailInfo.To = to;
+        emailInfo.Subject = subject;
         if (attachments.Any())
         {
             var bodyBuilder = new BodyBuilder();
             bodyBuilder.TextBody = plainTextBody;
-            foreach (var item in attachments)
+            foreach (var attachmentPath in attachments)
             {
-                await bodyBuilder.Attachments.AddAsync(item);
+                await bodyBuilder.Attachments.AddAsync(attachmentPath);
             }
             email.Body = bodyBuilder.ToMessageBody();
         }
@@ -32,27 +45,24 @@ public partial class MailSenderService
             };
         }
 
-        for (int a = 0; a < attemps; a++)
+        for (int attemptIndex = 0; attemptIndex < attempts; attemptIndex++)
         {
             using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
                 try
                 {
                     smtp.Connect("smtp.seznam.cz", 465, true);
-                    // Note: only needed if the SMTP server requires authentication
                     smtp.Authenticate(from.Mail, from.Password);
                     smtp.Send(email);
                     smtp.Disconnect(true);
-                    string information = JsonSerializer.Serialize(d);
+                    string information = JsonSerializer.Serialize(emailInfo);
                     logger.LogInformation(information);
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    // Username and Password not accepted.\ For more information, go to
-                    // 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-4212b8b39aesm70191195e9.46 - gsmtp
-                    d.Exc = ex.Message;
-                    string error = JsonSerializer.Serialize(d);
+                    emailInfo.Exc = ex.Message;
+                    string error = JsonSerializer.Serialize(emailInfo);
                     logger.LogError(error);
 
                 }
