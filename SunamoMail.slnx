@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoMail.Tests\\SunamoMail.Tests.csproj" />
+  <Project Path="RunnerMail\\RunnerMail.csproj" />
+  <Project Path="SunamoMail\SunamoMail.csproj" />
+</Solution>
