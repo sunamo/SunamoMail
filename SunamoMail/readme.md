@@ -1,20 +1,45 @@
-### SunamoMail
+# SunamoMail
 
-Part of PlatformIndependentNuGetPackages:
+A .NET library for sending emails via multiple SMTP providers including Gmail, Seznam.cz, and Centrum.cz.
 
-- [nuget.org](https://www.nuget.org/profiles/sunamo)
-- [github.org](https://github.com/sunamo/PlatformIndependentNuGetPackages)
+## Features
 
-Another links:
+- **Google Apps Mailbox** - Send emails via Gmail SMTP with support for TO, CC, BCC, reply-to, HTML body, and attachments
+- **Seznam.cz Mailbox** - Send emails via Seznam.cz SMTP with retry logic
+- **MailKit Integration** - Async email sending via Seznam.cz using the MailKit library with attachment support
+- **Static MailBox Wrapper** - Simplified static API for common email sending scenarios
 
-- [Developer site](https://sunamo.cz)
+## Installation
 
-Request for new features / bug report / etc: [Mail](mailto:radek.jancik@sunamo.cz) or on GitHub
+```
+dotnet add package SunamoMail
+```
+
+## Quick Start
+
+```csharp
+// Using GoogleAppsMailbox
+var mailbox = new GoogleAppsMailbox("Sender Name", "sender@gmail.com", "admin@example.com", "password");
+string result = mailbox.SendEmail("recipient@example.com", "", "", "", "Subject", "<p>Hello</p>", true);
+
+// Using static MailBox wrapper
+MailBox.Mailbox = mailbox;
+string result = MailBox.SendEmail("recipient@example.com", "", "", "Subject", "<p>Hello</p>");
+
+// Using MailSenderService with MailKit (async)
+var service = new MailSenderService(logger);
+var from = new From("Sender", "sender@seznam.cz", "password");
+bool success = await service.SendSeznamMailkitWorker(3, from, "recipient@example.com", "Subject", "Body text", Array.Empty<string>());
+```
+
 ## Target Frameworks
 
-**TargetFrameworks:** `net10.0;net9.0;net8.0`
+**Supported:** `net10.0`, `net9.0`, `net8.0`
 
-**Reason:** Code uses C# 12.0 features (collection expressions, primary constructors) or dependencies requiring .NET 8.0+:
-- Collection expressions `[]` syntax requires C# 12.0 (net8.0+)
-- Primary constructors require C# 12.0 (net8.0+) 
-- Entity Framework Core 9.x requires net8.0+
+## Links
+
+- [NuGet](https://www.nuget.org/profiles/sunamo)
+- [GitHub](https://github.com/sunamo/PlatformIndependentNuGetPackages)
+- [Developer Site](https://sunamo.cz)
+
+For feature requests or bug reports: [Email](mailto:radek.jancik@sunamo.cz) or open an issue on GitHub.

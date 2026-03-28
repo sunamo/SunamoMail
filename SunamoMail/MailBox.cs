@@ -10,7 +10,7 @@ public class MailBox
     /// <summary>
     /// Gets or sets the shared Google Apps mailbox instance.
     /// </summary>
-    public static GoogleAppsMailbox? Mailbox = null;
+    public static GoogleAppsMailbox? Mailbox { get; set; }
 
     /// <summary>
     /// Sends an email using the first recipient address as reply-to.
@@ -26,6 +26,9 @@ public class MailBox
     public static string SendEmail(string to, string cc, string bcc, bool isUsingFirstRecipientAsReplyTo, string subject, string htmlBody,
         params string[] attachments)
     {
+        if (Mailbox == null)
+            throw new InvalidOperationException("Mailbox must be initialized before sending emails.");
+
         var replyTo = "";
         if (isUsingFirstRecipientAsReplyTo) replyTo = to;
 
@@ -46,6 +49,9 @@ public class MailBox
     public static string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string htmlBody,
         params string[] attachments)
     {
+        if (Mailbox == null)
+            throw new InvalidOperationException("Mailbox must be initialized before sending emails.");
+
         return Mailbox.SendEmail(to, cc, bcc, replyTo, subject, htmlBody, true, attachments);
     }
 

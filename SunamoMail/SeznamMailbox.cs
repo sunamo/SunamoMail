@@ -7,14 +7,14 @@ namespace SunamoMail;
 public class SeznamMailbox
 {
     /// <summary>
-    /// Gets or sets the password for the email account.
+    /// The password for the email account.
     /// </summary>
-    private readonly string? Password;
+    private readonly string? password;
 
     /// <summary>
-    /// Gets or sets the SMTP server configuration.
+    /// The SMTP server configuration.
     /// </summary>
-    private readonly SmtpServerData SmtpServerData = new();
+    private readonly SmtpServerData smtpServerData = new();
 
     /// <summary>
     /// Gets or sets the complete email address configured for sending.
@@ -54,8 +54,8 @@ public class SeznamMailbox
         this.FromName = fromName;
         this.FromEmail = fromEmail;
         this.MailOfAdmin = mailOfAdmin;
-        this.Password = password;
-        if (smtpServer != null) SmtpServerData = smtpServer;
+        this.password = password;
+        if (smtpServer != null) smtpServerData = smtpServer;
     }
 
     /// <summary>
@@ -80,12 +80,15 @@ public class SeznamMailbox
 
         var emailStatus = string.Empty;
 
+        if (string.IsNullOrEmpty(FromEmail))
+            return "error: FromEmail is not configured.";
+
         var client = new SmtpClient();
         client.EnableSsl = true;
         client.UseDefaultCredentials = false;
-        client.Credentials = new NetworkCredential(FromEmail, Password);
-        client.Port = SmtpServerData.Port;
-        client.Host = SmtpServerData.SmtpServer;
+        client.Credentials = new NetworkCredential(FromEmail, password);
+        client.Port = smtpServerData.Port;
+        client.Host = smtpServerData.SmtpServer;
 
         var mail = new MailMessage();
 

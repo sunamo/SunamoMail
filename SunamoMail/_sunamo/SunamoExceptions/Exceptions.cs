@@ -47,8 +47,4 @@ internal sealed partial class Exceptions
     }
     #endregion
 
-    #region IsNullOrWhitespace
-    internal static readonly StringBuilder SbAdditionalInfoInner = new();
-    internal static readonly StringBuilder SbAdditionalInfo = new();
-    #endregion
 }

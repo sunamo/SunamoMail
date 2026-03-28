@@ -6,8 +6,6 @@ namespace SunamoMail;
 /// </summary>
 public class GoogleAppsMailbox
 {
-    private static Type type = typeof(GoogleAppsMailbox);
-
     /// <summary>
     /// Gets or sets the complete email address configured for sending.
     /// </summary>
@@ -96,7 +94,8 @@ public class GoogleAppsMailbox
 
         var emailStatus = string.Empty;
 
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        if (string.IsNullOrEmpty(FromEmail))
+            return "error: FromEmail is not configured.";
 
         var client = new SmtpClient();
         client.EnableSsl = true;
@@ -194,7 +193,6 @@ public class GoogleAppsMailbox
         {
             client.Send(mail);
             mail.Dispose();
-            mail = null;
             emailStatus = "success";
         }
         catch (Exception ex)
