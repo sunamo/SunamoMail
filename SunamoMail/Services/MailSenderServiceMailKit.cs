@@ -89,7 +89,11 @@ public partial class MailSenderService
                     emailInfo.Exc = ex.Message;
                     string error = JsonSerializer.Serialize(emailInfo);
                     logger.LogError(error);
-
+                    Console.Error.WriteLine($"[SunamoMail SMTP attempt {attemptIndex + 1}/{attempts}] to={to} subject=\"{subject}\" ex={ex.GetType().Name}: {ex.Message}");
+                    if (attemptIndex == attempts - 1)
+                    {
+                        throw new InvalidOperationException($"SMTP send to {to} failed after {attempts} attempt(s): {ex.Message}", ex);
+                    }
                 }
             }
 
