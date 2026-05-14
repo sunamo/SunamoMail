@@ -16,13 +16,38 @@ public partial class MailSenderService
     /// <param name="plainTextBody">Plain text email body content.</param>
     /// <param name="attachments">Collection of file paths to attach to the email.</param>
     /// <returns>True if email was sent successfully, false otherwise.</returns>
-    public async Task<bool> SendSeznamMailkitWorker(int attempts, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
+    public Task<bool> SendSeznamMailkitWorker(int attempts, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
+    {
+        return SendSeznamMailkitWorker(attempts, from, to, subject, plainTextBody, attachments, null);
+    }
+
+    /// <summary>
+    /// Sends email via Seznam.cz using MailKit library with retry logic and optional CC recipients.
+    /// </summary>
+    /// <param name="attempts">Number of send attempts to make before giving up.</param>
+    /// <param name="from">Sender credentials (name, email, password).</param>
+    /// <param name="to">Recipient email address.</param>
+    /// <param name="subject">Email subject line.</param>
+    /// <param name="plainTextBody">Plain text email body content.</param>
+    /// <param name="attachments">Collection of file paths to attach to the email.</param>
+    /// <param name="cc">Optional collection of CC email addresses.</param>
+    /// <returns>True if email was sent successfully, false otherwise.</returns>
+    public async Task<bool> SendSeznamMailkitWorker(int attempts, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments, IEnumerable<string>? cc)
     {
         to = to.Trim();
 
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress(from.Name, from.Mail));
         email.To.Add(new MailboxAddress(to, to));
+        if (cc != null)
+        {
+            foreach (var ccAddress in cc)
+            {
+                if (string.IsNullOrWhiteSpace(ccAddress)) continue;
+                var trimmed = ccAddress.Trim();
+                email.Cc.Add(new MailboxAddress(trimmed, trimmed));
+            }
+        }
         email.Subject = subject;
         dynamic emailInfo = new ExpandoObject();
         emailInfo.To = to;
