@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
-    <Version>26.5.14.5</Version>
+    <Version>26.5.18.6</Version>
     <Description>Sending mail with several providers (Seznam.cz, Gmail, etc.)</Description>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
-    <PackageProjectUrl>https://sunamo.cz/</PackageProjectUrl>
+    <PackageProjectUrl>https://sunamo.github.io/PlatformIndependentNuGetPackages/SunamoMail/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sunamo/SunamoMail.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageReleaseNotes>feat: Added net10.0 to TargetFrameworks</PackageReleaseNotes>
+    <PackageReleaseNotes>y</PackageReleaseNotes>
     <Nullable>enable</Nullable>
     <DefineConstants>$(DefineConstants);ASYNC</DefineConstants>
     <IsPackable>true</IsPackable>
