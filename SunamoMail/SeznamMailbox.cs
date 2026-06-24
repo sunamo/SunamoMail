@@ -1,53 +1,21 @@
 namespace SunamoMail;
 
-/// <summary>
-/// Seznam.cz mailbox for sending emails.
-/// Working: does NOT save sent messages to outbox.
-/// </summary>
 public class SeznamMailbox
 {
-    /// <summary>
-    /// The password for the email account.
-    /// </summary>
     private readonly string? password;
 
-    /// <summary>
-    /// The SMTP server configuration.
-    /// </summary>
     private readonly SmtpServerData smtpServerData = new();
 
-    /// <summary>
-    /// Gets or sets the complete email address configured for sending.
-    /// </summary>
     public string? FromEmail { get; set; }
 
-    /// <summary>
-    /// Gets or sets the sender name that appears to recipients (does not need to be an email address).
-    /// </summary>
     public string? FromName { get; set; }
 
-    /// <summary>
-    /// Gets or sets the administrator's email address for notifications.
-    /// </summary>
     public string? MailOfAdmin { get; set; }
 
-    /// <summary>
-    /// Initializes a new instance for sending from noreply@sunamo.cz.
-    /// </summary>
     public SeznamMailbox()
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance with full email configuration.
-    /// Can be null, used to send mails to webmaster.
-    /// Don't forget to set password or use parameterless constructor.
-    /// </summary>
-    /// <param name="fromName">The sender's display name.</param>
-    /// <param name="fromEmail">The email address to send from.</param>
-    /// <param name="mailOfAdmin">The administrator's email address.</param>
-    /// <param name="password">The email account password.</param>
-    /// <param name="smtpServer">Optional SMTP server configuration.</param>
     public SeznamMailbox(string fromName, string fromEmail, string mailOfAdmin, string password,
         SmtpServerData? smtpServer = null)
     {
@@ -55,24 +23,9 @@ public class SeznamMailbox
         this.FromEmail = fromEmail;
         this.MailOfAdmin = mailOfAdmin;
         this.password = password;
-        if (smtpServer != null) smtpServerData = smtpServer;
+        if (smtpServer is not null) smtpServerData = smtpServer;
     }
 
-    /// <summary>
-    /// Sends an email message with retry attempts.
-    /// Multiple addresses can be specified in to, cc, bcc separated by semicolons.
-    /// Set replyTo to empty string to use the from address as reply-to.
-    /// </summary>
-    /// <param name="attempts">Number of send attempts to make before giving up.</param>
-    /// <param name="to">Recipient email address(es), semicolon-separated for multiple.</param>
-    /// <param name="cc">Carbon copy email address(es), semicolon-separated for multiple.</param>
-    /// <param name="bcc">Blind carbon copy email address(es), semicolon-separated for multiple.</param>
-    /// <param name="replyTo">Reply-to email address, or empty string to use the from address.</param>
-    /// <param name="subject">Email subject line.</param>
-    /// <param name="body">Email body content.</param>
-    /// <param name="isBodyHtml">Whether the body content is HTML formatted.</param>
-    /// <param name="attachments">Optional file paths to attach to the email.</param>
-    /// <returns>Returns "success" on successful send, or "error: [message]" on failure.</returns>
     public string SendEmail(int attempts, string to, string cc, string bcc, string replyTo, string subject, string body,
         bool isBodyHtml, params string[] attachments)
     {
@@ -185,7 +138,7 @@ public class SeznamMailbox
             catch (Exception ex)
             {
                 emailStatus = "error: ";
-                if (ex.Message != null) emailStatus += ex.Message + ". ";
+                if (ex.Message is not null) emailStatus += ex.Message + ". ";
             }
         }
 
