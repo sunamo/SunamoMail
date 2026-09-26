@@ -68,7 +68,7 @@ public class GoogleAppsMailbox
         this.MailOfAdmin = mailOfAdmin;
         this.Password = password;
 
-        if (smtpServer != null) SmtpServerData = smtpServer;
+        if (smtpServer is not null) SmtpServerData = smtpServer;
     }
 
     /// <summary>

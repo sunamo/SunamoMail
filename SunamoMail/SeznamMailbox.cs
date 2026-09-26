@@ -55,7 +55,7 @@ public class SeznamMailbox
         this.FromEmail = fromEmail;
         this.MailOfAdmin = mailOfAdmin;
         this.password = password;
-        if (smtpServer != null) smtpServerData = smtpServer;
+        if (smtpServer is not null) smtpServerData = smtpServer;
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class SeznamMailbox
             catch (Exception ex)
             {
                 emailStatus = "error: ";
-                if (ex.Message != null) emailStatus += ex.Message + ". ";
+                if (ex.Message is not null) emailStatus += ex.Message + ". ";
             }
         }
 

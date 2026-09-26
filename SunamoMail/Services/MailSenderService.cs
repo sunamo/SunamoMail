@@ -69,7 +69,7 @@ public partial class MailSenderService(ILogger logger)
         {
             try
             {
-                SmtpClient smtpClient = new SmtpClient("smtp.seznam.cz", 465);
+                var smtpClient = new SmtpClient("smtp.seznam.cz", 465);
                 smtpClient.EnableSsl = true;
                 smtpClient.Credentials = new NetworkCredential(from.Mail, from.Password);
 

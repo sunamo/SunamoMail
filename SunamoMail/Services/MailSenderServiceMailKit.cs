@@ -39,7 +39,7 @@ public partial class MailSenderService
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress(from.Name, from.Mail));
         email.To.Add(new MailboxAddress(to, to));
-        if (cc != null)
+        if (cc is not null)
         {
             foreach (var ccAddress in cc)
             {

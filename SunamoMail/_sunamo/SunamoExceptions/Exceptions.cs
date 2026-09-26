@@ -15,12 +15,12 @@ internal sealed partial class Exceptions
     /// <returns>A formatted string containing the exception messages.</returns>
     internal static string TextOfExceptions(Exception exception, bool isIncludingInnerExceptions = true)
     {
-        if (exception == null) return string.Empty;
+        if (exception is null) return string.Empty;
         StringBuilder stringBuilder = new();
         stringBuilder.Append("Exception:");
         stringBuilder.AppendLine(exception.Message);
         if (isIncludingInnerExceptions)
-            while (exception.InnerException != null)
+            while (exception.InnerException is not null)
             {
                 exception = exception.InnerException;
                 stringBuilder.AppendLine(exception.Message);
@@ -38,7 +38,7 @@ internal sealed partial class Exceptions
     {
         StackTrace stackTrace = new();
         var methodBase = stackTrace.GetFrame(stackFrameIndex)?.GetMethod();
-        if (methodBase == null)
+        if (methodBase is null)
         {
             return "Method name cannot be get";
         }
