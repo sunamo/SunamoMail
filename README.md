@@ -1,5 +1,9 @@
 # SunamoMail
 
+## Short description
+
+Odesílání e-mailů přes více poskytovatelů (Seznam.cz, Gmail a další). Obsahuje třídy pro SMTP servery a schránky a metody pro odeslání zprávy. Je součástí balíčků Sunamo pro .NET.
+
 Sending mail with several providers (Seznam.cz, Gmail, etc.)
 
 ## Overview
