@@ -1,18 +1,9 @@
 namespace SunamoMail._sunamo.SunamoExceptions;
 
-/// <summary>
-/// Exception handling utilities.
-/// </summary>
 internal sealed partial class Exceptions
 {
     #region Other
 
-    /// <summary>
-    /// Gets the text representation of an exception and optionally its inner exceptions.
-    /// </summary>
-    /// <param name="exception">The exception to format.</param>
-    /// <param name="isIncludingInnerExceptions">Whether to include inner exceptions in the output.</param>
-    /// <returns>A formatted string containing the exception messages.</returns>
     internal static string TextOfExceptions(Exception exception, bool isIncludingInnerExceptions = true)
     {
         if (exception is null) return string.Empty;
@@ -29,11 +20,6 @@ internal sealed partial class Exceptions
         return result;
     }
 
-    /// <summary>
-    /// Gets the name of the calling method from the stack trace.
-    /// </summary>
-    /// <param name="stackFrameIndex">The stack frame index to retrieve (default is 1 for immediate caller).</param>
-    /// <returns>The name of the calling method, or an error message if unavailable.</returns>
     internal static string CallingMethod(int stackFrameIndex = 1)
     {
         StackTrace stackTrace = new();
