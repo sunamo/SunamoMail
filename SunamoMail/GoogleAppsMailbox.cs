@@ -1,65 +1,27 @@
 namespace SunamoMail;
 
-/// <summary>
-/// Google Apps mailbox for sending emails.
-/// Working: saves sent messages to outbox.
-/// </summary>
 public class GoogleAppsMailbox
 {
-    /// <summary>
-    /// Gets or sets the complete email address configured for sending.
-    /// </summary>
     public string? FromEmail { get; set; }
 
-    /// <summary>
-    /// Gets or sets the sender name that appears to recipients (does not need to be an email address).
-    /// </summary>
     public string? FromName { get; set; }
 
-    /// <summary>
-    /// Gets or sets the administrator's email address for notifications.
-    /// </summary>
     public string? MailOfAdmin { get; set; }
 
-    /// <summary>
-    /// Gets or sets the password for the email account.
-    /// </summary>
     public string? Password { get; set; }
 
-    /// <summary>
-    /// Gets or sets the SMTP server configuration.
-    /// </summary>
     public SmtpServerData SmtpServerData { get; set; } = new();
 
-    /// <summary>
-    /// Initializes a new instance for sending from noreply@sunamo.cz.
-    /// </summary>
     public GoogleAppsMailbox()
     {
 
     }
 
-    /// <summary>
-    /// Initializes a new instance with the specified email configuration.
-    /// </summary>
-    /// <param name="fromEmail">The email address to send from.</param>
-    /// <param name="mailOfAdmin">The administrator's email address.</param>
-    /// <param name="password">The email account password.</param>
-    /// <param name="smtpServer">Optional SMTP server configuration.</param>
     public GoogleAppsMailbox(string fromEmail, string mailOfAdmin, string password, SmtpServerData? smtpServer = null) :
         this(string.Empty, fromEmail, mailOfAdmin, password, smtpServer)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance with full email configuration.
-    /// Can be null, used to send mails to webmaster.
-    /// </summary>
-    /// <param name="fromName">The sender's display name.</param>
-    /// <param name="fromEmail">The email address to send from.</param>
-    /// <param name="mailOfAdmin">The administrator's email address.</param>
-    /// <param name="password">The email account password.</param>
-    /// <param name="smtpServer">Optional SMTP server configuration.</param>
     public GoogleAppsMailbox(string fromName, string fromEmail, string mailOfAdmin, string password,
         SmtpServerData? smtpServer = null)
     {
@@ -71,22 +33,6 @@ public class GoogleAppsMailbox
         if (smtpServer is not null) SmtpServerData = smtpServer;
     }
 
-    /// <summary>
-    /// Sends an email message.
-    /// Returns either "success" or a message starting with "error:".
-    /// Multiple addresses can be specified in to, cc, bcc separated by semicolons.
-    /// Set replyTo to empty string to use the from address as reply-to.
-    /// Use empty string for unused parameters, not null.
-    /// </summary>
-    /// <param name="to">Recipient email address(es), semicolon-separated for multiple.</param>
-    /// <param name="cc">Carbon copy email address(es), semicolon-separated for multiple.</param>
-    /// <param name="bcc">Blind carbon copy email address(es), semicolon-separated for multiple.</param>
-    /// <param name="replyTo">Reply-to email address, or empty string to use the from address.</param>
-    /// <param name="subject">Email subject line.</param>
-    /// <param name="body">Email body content.</param>
-    /// <param name="isBodyHtml">Whether the body content is HTML formatted.</param>
-    /// <param name="attachments">Optional file paths to attach to the email.</param>
-    /// <returns>Returns "success" on successful send, or "error: [message]" on failure.</returns>
     public string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string body,
         bool isBodyHtml, params string[] attachments)
     {
