@@ -1,21 +1,41 @@
 namespace SunamoMail;
 
+/// <summary>
+/// Represents the seznam mailbox type.
+/// </summary>
 public class SeznamMailbox
 {
     private readonly string? password;
 
     private readonly SmtpServerData smtpServerData = new();
 
+    /// <summary>
+    /// Gets or sets the from email.
+    /// </summary>
     public string? FromEmail { get; set; }
 
+    /// <summary>
+    /// Gets or sets the from name.
+    /// </summary>
     public string? FromName { get; set; }
 
+    /// <summary>
+    /// Gets or sets the mail of admin.
+    /// </summary>
     public string? MailOfAdmin { get; set; }
 
+    /// <summary>
+    /// Seznam mailbox.
+    /// </summary>
+    /// <returns>The seznam mailbox result.</returns>
     public SeznamMailbox()
     {
     }
 
+    /// <summary>
+    /// Seznam mailbox.
+    /// </summary>
+    /// <returns>The seznam mailbox result.</returns>
     public SeznamMailbox(string fromName, string fromEmail, string mailOfAdmin, string password,
         SmtpServerData? smtpServer = null)
     {
@@ -26,6 +46,11 @@ public class SeznamMailbox
         if (smtpServer is not null) smtpServerData = smtpServer;
     }
 
+    /// <summary>
+    /// Send email.
+    /// </summary>
+    /// <param name="null">The null.</param>
+    /// <returns>The send email result.</returns>
     public string SendEmail(int attempts, string to, string cc, string bcc, string replyTo, string subject, string body,
         bool isBodyHtml, params string[] attachments)
     {

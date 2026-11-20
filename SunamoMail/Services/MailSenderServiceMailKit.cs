@@ -2,11 +2,32 @@ namespace SunamoMail.Services;
 
 public partial class MailSenderService
 {
+    /// <summary>
+    /// Send seznam mailkit worker.
+    /// </summary>
+    /// <param name="attempts">The attempts.</param>
+    /// <param name="from">The from.</param>
+    /// <param name="to">The to.</param>
+    /// <param name="subject">The subject.</param>
+    /// <param name="plainTextBody">The plain text body.</param>
+    /// <param name="attachments">The attachments.</param>
+    /// <returns>The send seznam mailkit worker result.</returns>
     public Task<bool> SendSeznamMailkitWorker(int attempts, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments)
     {
         return SendSeznamMailkitWorker(attempts, from, to, subject, plainTextBody, attachments, null);
     }
 
+    /// <summary>
+    /// Send seznam mailkit worker.
+    /// </summary>
+    /// <param name="attempts">The attempts.</param>
+    /// <param name="from">The from.</param>
+    /// <param name="to">The to.</param>
+    /// <param name="subject">The subject.</param>
+    /// <param name="plainTextBody">The plain text body.</param>
+    /// <param name="attachments">The attachments.</param>
+    /// <param name="cc">The cc.</param>
+    /// <returns>The send seznam mailkit worker result.</returns>
     public async Task<bool> SendSeznamMailkitWorker(int attempts, From from, string to, string subject, string plainTextBody, IEnumerable<string> attachments, IEnumerable<string>? cc)
     {
         to = to.Trim();
