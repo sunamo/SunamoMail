@@ -1,27 +1,56 @@
 namespace SunamoMail;
 
+/// <summary>
+/// Represents the google apps mailbox type.
+/// </summary>
 public class GoogleAppsMailbox
 {
+    /// <summary>
+    /// Gets or sets the from email.
+    /// </summary>
     public string? FromEmail { get; set; }
 
+    /// <summary>
+    /// Gets or sets the from name.
+    /// </summary>
     public string? FromName { get; set; }
 
+    /// <summary>
+    /// Gets or sets the mail of admin.
+    /// </summary>
     public string? MailOfAdmin { get; set; }
 
+    /// <summary>
+    /// Gets or sets the password.
+    /// </summary>
     public string? Password { get; set; }
 
+    /// <summary>
+    /// Gets or sets the smtp server data.
+    /// </summary>
     public SmtpServerData SmtpServerData { get; set; } = new();
 
+    /// <summary>
+    /// Initializes a new instance of the google apps mailbox class.
+    /// </summary>
     public GoogleAppsMailbox()
     {
 
     }
 
+    /// <summary>
+    /// Google apps mailbox.
+    /// </summary>
+    /// <returns>The google apps mailbox result.</returns>
     public GoogleAppsMailbox(string fromEmail, string mailOfAdmin, string password, SmtpServerData? smtpServer = null) :
         this(string.Empty, fromEmail, mailOfAdmin, password, smtpServer)
     {
     }
 
+    /// <summary>
+    /// Google apps mailbox.
+    /// </summary>
+    /// <returns>The google apps mailbox result.</returns>
     public GoogleAppsMailbox(string fromName, string fromEmail, string mailOfAdmin, string password,
         SmtpServerData? smtpServer = null)
     {
@@ -33,6 +62,14 @@ public class GoogleAppsMailbox
         if (smtpServer is not null) SmtpServerData = smtpServer;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the send email class.
+    /// </summary>
+    /// <param name="string.Empty">The string empty.</param>
+    /// <param name="fromEmail">The from email.</param>
+    /// <param name="mailOfAdmin">The mail of admin.</param>
+    /// <param name="password">The password.</param>
+    /// <param name="smtpServer">The smtp server.</param>
     public string SendEmail(string to, string cc, string bcc, string replyTo, string subject, string body,
         bool isBodyHtml, params string[] attachments)
     {
