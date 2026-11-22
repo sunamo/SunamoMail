@@ -28,13 +28,13 @@ public class SmtpServerData
     }
 
     /// <summary>
-    /// Seznam cz.
+    /// Seznam.cz SMTP server on the submission port 587 (port 25 is blocked by most providers).
     /// </summary>
     /// <returns>The seznam cz result.</returns>
     public static SmtpServerData SeznamCz()
     {
         var serverData = new SmtpServerData();
-        serverData.Port = 25;
+        serverData.Port = 587;
         serverData.SmtpServer = "smtp.seznam.cz";
         return serverData;
     }

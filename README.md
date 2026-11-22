@@ -56,3 +56,19 @@ This package is part of the Sunamo package ecosystem. For more information about
 ## License
 
 See the repository root for license information.
+
+<!-- sunamo:test-coverage:start -->
+## Test coverage
+
+| Metric | Value |
+|---|---|
+| Method | static |
+| Test projects | 1 |
+| Public types referenced by tests | 1/8 (12.5 %) |
+| Public methods referenced by tests | 2/11 (18.2 %) |
+| Line coverage | n/a |
+| Branch coverage | n/a |
+| Generated (UTC) | 2026-11-22 21:24 |
+
+<!-- sunamo:test-coverage:data {"package":"SunamoMail","container":"pinp","testProjects":1,"publicTypes":8,"typesReferencedByTests":1,"publicMethods":11,"methodsReferencedByTests":2,"lineRate":null,"branchRate":null,"method":"static","generatedUtc":"2026-11-22 21:24"} -->
+<!-- sunamo:test-coverage:end -->
